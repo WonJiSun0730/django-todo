@@ -1,0 +1,5 @@
+{% extends 'todos/base.html' %}
+{% block title %}할 일 삭제{% endblock %}
+{% block content %}
+<a class="back" href="{% url 'todos:list' %}">← 목록으로</a><h1>할 일을 삭제할까요?</h1><div class="panel"><h2>{{ todo.title }}</h2><p class="muted">삭제한 할 일은 복구할 수 없습니다.</p><form method="post">{% csrf_token %}<div class="form-actions"><a class="button secondary" href="{% url 'todos:list' %}">취소</a><button class="button destructive" type="submit">삭제하기</button></div></form></div>
+{% endblock %}

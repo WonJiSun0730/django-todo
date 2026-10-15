@@ -1,0 +1,17 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}오늘의 할 일{% endblock %} · Todo</title>
+  <link rel="stylesheet" href="{% static 'todos/style.css' %}">
+</head>
+<body>
+  <header><a class="brand" href="{% url 'todos:list' %}">✓ &nbsp; TODO</a><span>작은 실천이 만드는 하루</span></header>
+  <main>
+    {% for message in messages %}<div class="notice" role="status">{{ message }}</div>{% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer>하나씩, 나의 속도로.</footer>
+</body>
+</html>

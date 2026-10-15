@@ -1,0 +1,12 @@
+{% extends 'todos/base.html' %}
+{% block title %}{% if todo %}할 일 수정{% else %}새 할 일{% endif %}{% endblock %}
+{% block content %}
+<a class="back" href="{% url 'todos:list' %}">← 목록으로</a><p class="eyebrow">MAKE IT HAPPEN</p><h1>{% if todo %}할 일 수정{% else %}새 할 일{% endif %}<span class="dot">.</span></h1>
+<form method="post" class="panel" novalidate>{% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="field"><label for="{{ form.title.id_for_label }}">제목 <span class="required">필수</span></label>{{ form.title }}{{ form.title.errors }}<small>200자 이내로 입력해 주세요.</small></div>
+  <div class="field"><label for="{{ form.content.id_for_label }}">세부 내용 <span class="muted">선택</span></label>{{ form.content }}{{ form.content.errors }}</div>
+  <div class="field checkbox">{{ form.is_completed }}<label for="{{ form.is_completed.id_for_label }}">완료한 할 일이에요</label>{{ form.is_completed.errors }}</div>
+  <div class="form-actions"><a class="button secondary" href="{% url 'todos:list' %}">취소</a><button class="button" type="submit">{% if todo %}변경 저장{% else %}할 일 등록{% endif %}</button></div>
+</form>
+{% endblock %}

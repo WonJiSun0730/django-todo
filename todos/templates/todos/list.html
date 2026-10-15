@@ -1,0 +1,17 @@
+{% extends 'todos/base.html' %}
+{% block content %}
+<div class="heading"><div><p class="eyebrow">MY DAILY PLAN</p><h1>오늘의 할 일<span class="dot">.</span></h1><p class="muted">머릿속 계획을 꺼내고, 하나씩 완료해 보세요.</p></div><a class="button" href="{% url 'todos:create' %}">＋ 새 할 일</a></div>
+<section class="stats" aria-label="할 일 현황"><div><span>전체 할 일</span><strong>{{ counts.total }}</strong></div><div><span>진행 중</span><strong>{{ counts.active }}</strong></div><div><span>완료</span><strong class="green">{{ counts.completed }}</strong></div></section>
+<nav class="tabs" aria-label="목록 필터"><a class="{% if status == 'all' %}selected{% endif %}" href="?status=all">전체</a><a class="{% if status == 'active' %}selected{% endif %}" href="?status=active">진행 중</a><a class="{% if status == 'completed' %}selected{% endif %}" href="?status=completed">완료</a></nav>
+<section aria-label="할 일 목록">
+{% for todo in todos %}
+  <article class="todo {% if todo.is_completed %}completed{% endif %}">
+    <form action="{% url 'todos:complete' todo.pk %}" method="post" class="check-form">{% csrf_token %}<input id="done-{{ todo.pk }}" type="checkbox" name="is_completed" {% if todo.is_completed %}checked{% endif %} aria-label="{{ todo.title }} 완료 여부"><button class="save-state" type="submit">상태 저장</button></form>
+    <div class="todo-body"><h2>{{ todo.title }}</h2>{% if todo.content %}<p class="description">{{ todo.content|linebreaksbr }}</p>{% endif %}<div class="meta">{{ todo.created_at|date:'Y.m.d H:i' }} <span class="badge">{% if todo.is_completed %}완료{% else %}진행 중{% endif %}</span></div></div>
+    <div class="actions"><a href="{% url 'todos:update' todo.pk %}">수정</a><a class="danger" href="{% url 'todos:delete' todo.pk %}">삭제</a></div>
+  </article>
+{% empty %}
+  <div class="empty"><div class="empty-icon">✓</div><h2>아직 할 일이 없어요</h2><p class="muted">새 할 일을 등록해 오늘의 계획을 시작해 보세요.</p><a href="{% url 'todos:create' %}">첫 할 일 등록하기 →</a></div>
+{% endfor %}
+</section>
+{% endblock %}
